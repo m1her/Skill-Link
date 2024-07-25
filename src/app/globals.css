@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+    scroll-behavior: smooth;
+  }
+  
+/* #0652e9 dark blue */
+/* #62e1e9 light blue */
