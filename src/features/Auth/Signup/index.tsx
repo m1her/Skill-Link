@@ -56,7 +56,14 @@ export const SignupFeat = () => {
         )
           .then(() => {
             setIsLoading(false);
-            addDoc(collection(db, "users"), signupData);
+            addDoc(collection(db, "users"), {
+              email: signupData.email,
+              name: signupData.name,
+              specialty: signupData.specialty,
+              goal: "No goal set by the user",
+              profileImg:
+                "https://firebasestorage.googleapis.com/v0/b/skill-link-98004.appspot.com/o/defaultpfpimg.jpg?alt=media&token=86693fa1-a927-4526-ac75-6dc49edabeb0",
+            });
             router.push("/login");
           })
           .catch((err) => {

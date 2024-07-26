@@ -23,7 +23,6 @@ interface TextInputTypes {
   autoFocus?: boolean;
   disabled?: boolean;
   maxLength?: number;
-  tagBackgroundColor?: string;
 }
 
 export const TextInput = ({
@@ -42,7 +41,6 @@ export const TextInput = ({
   disabled = false,
   defaultValue,
   maxLength,
-  tagBackgroundColor,
 }: TextInputTypes) => {
   const [hide, setHide] = useState(false);
   return (

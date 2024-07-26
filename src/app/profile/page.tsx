@@ -1,9 +1,12 @@
-import React from 'react'
+import { ProfileHeaderFeat } from "@/features/Profile/Header";
+import React from "react";
 
 const Profile = () => {
   return (
-    <div>Profile</div>
-  )
-}
+    <div>
+      <ProfileHeaderFeat />
+    </div>
+  );
+};
 
-export default Profile
+export default Profile;
