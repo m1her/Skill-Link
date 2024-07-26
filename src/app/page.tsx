@@ -7,7 +7,7 @@ import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 export default function Home() {
   return (
-    <div >
+    <div>
       <MainHeader />
       <About />
       <HowItWorks />

@@ -2,6 +2,7 @@
 import { Button } from "@/components/Button";
 import { TextInput } from "@/components/Input";
 import Modal from "@/components/Modal";
+import { useAlert } from "@/context/AlertContext";
 import { db } from "@/firebase/firebaseConfig";
 import { object } from "@/util/validation";
 import {
@@ -35,6 +36,7 @@ const EditHeader = ({
   specialty: string;
   goal: string;
 }) => {
+  const { showAlert } = useAlert();
   const [profileData, setProfileData] = useState<{ [k: string]: string }>({
     name: "",
     specialty: "",
@@ -84,6 +86,10 @@ const EditHeader = ({
               .then(() => {
                 setIsLoading(false);
                 closeModal();
+                showAlert({
+                  message: "Edits Saved Successfully",
+                  type: "success",
+                });
               })
               .catch(() => {
                 setErrors({
@@ -97,7 +103,7 @@ const EditHeader = ({
         }
       }
     },
-    [closeModal, profileData, userEmail, validate]
+    [closeModal, profileData, showAlert, userEmail, validate]
   );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

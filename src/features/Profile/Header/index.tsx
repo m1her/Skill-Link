@@ -4,7 +4,6 @@ import { auth, db } from "@/firebase/firebaseConfig";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";

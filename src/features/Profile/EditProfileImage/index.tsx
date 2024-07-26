@@ -1,4 +1,5 @@
 "use client";
+import { useAlert } from "@/context/AlertContext";
 import { db, storage } from "@/firebase/firebaseConfig";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,8 +22,8 @@ export const EditProfileImage = ({
   currentImg: string;
   userEmail: string;
 }) => {
+  const { showAlert } = useAlert();
   const [image, setImage] = useState<string>("");
-
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -30,7 +31,10 @@ export const EditProfileImage = ({
       const maxSize = 1 * 1024 * 1024;
 
       if (file.size > maxSize) {
-        alert("File size exceeds 1 MB.");
+        showAlert({
+          message: "File size exceeds 1 MB",
+          type: "error",
+        });
         return;
       }
 
@@ -51,7 +55,12 @@ export const EditProfileImage = ({
             await updateDoc(docRef, {
               profileImg: downloadURL,
             })
-              .then(() => {})
+              .then(() => {
+                showAlert({
+                  message: "Image Changed Successfully",
+                  type: "success",
+                });
+              })
               .catch(() => {});
           });
         }
