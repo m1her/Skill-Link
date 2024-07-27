@@ -5,11 +5,11 @@ export const Spinner = ({ color }: { color?: string }) => {
     <div role="status">
       <svg
         aria-hidden="true"
-        className={`inline w-5 h-5 fill-white ${
+        className={`inline w-5 h-5  ${
           color ? color : "text-[#0652e9]"
         }  animate-spin`}
         viewBox="0 0 100 101"
-        fill="none"
+        fill="white"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
