@@ -42,7 +42,7 @@ export const Alert = ({ message, type = "info", onClose }: AlertTypes) => {
 
   return (
     <div
-      className={`text-sm p-4 rounded-sm ${alertClass} absolute z-50 top-4 right-4 flex items-center gap-x-2 w-fit`}
+      className={`text-sm p-4 rounded-sm ${alertClass} fixed z-50 top-4 right-4 flex items-center gap-x-2 w-fit`}
     >
       <FontAwesomeIcon icon={icon} className="w-3.5 h-3.5" />
       <span>{message}</span>

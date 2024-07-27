@@ -2,7 +2,7 @@
 import { createContext, useContext, useState } from "react";
 import { Alert } from "@/components/Alert";
 
-interface AlertTypes {
+export interface AlertTypes {
   message: string;
   type: "info" | "success" | "error" | "warning";
 }

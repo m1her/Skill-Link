@@ -1,6 +1,7 @@
 "use client";
 import { useAlert } from "@/context/AlertContext";
 import { db, storage } from "@/firebase/firebaseConfig";
+import { handleImageUpload } from "@/util/profileFunctions";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -24,50 +25,10 @@ export const EditProfileImage = ({
 }) => {
   const { showAlert } = useAlert();
   const [image, setImage] = useState<string>("");
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
 
-      const maxSize = 1 * 1024 * 1024;
-
-      if (file.size > maxSize) {
-        showAlert({
-          message: "File size exceeds 1 MB",
-          type: "error",
-        });
-        return;
-      }
-
-      const storageRef = ref(storage, file.name);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on("state_changed", async () => {
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        setImage(downloadURL);
-
-        const collectionRef = collection(db, "users");
-        const q = query(collectionRef, where("email", "==", userEmail));
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          querySnapshot.forEach(async (docSnapshot) => {
-            const docRef = doc(db, "users", docSnapshot.id);
-            await updateDoc(docRef, {
-              profileImg: downloadURL,
-            })
-              .then(() => {
-                showAlert({
-                  message: "Image Changed Successfully",
-                  type: "success",
-                });
-              })
-              .catch(() => {});
-          });
-        }
-      });
-    }
+  const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleImageUpload({ event, showAlert, setImage, userEmail });
   };
-
   return (
     <>
       <Image src={image ? image : currentImg} alt={""} fill />
@@ -76,7 +37,7 @@ export const EditProfileImage = ({
         <input
           type="file"
           accept="image/*"
-          onChange={handleImageUpload}
+          onChange={handleImage}
           className="absolute inset-0 opacity-0 cursor-pointer"
         />
       </div>
