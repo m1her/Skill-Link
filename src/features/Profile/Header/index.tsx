@@ -1,20 +1,31 @@
 "use client";
-
 import { Search } from "@/components/Search";
-import { auth } from "@/firebase/firebaseConfig";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import React, { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useUserData } from "@/context/UserContext"; // Adjust the import path to your UserContext
+import React, { useEffect, useState } from "react";
+import { useUserData } from "@/context/UserContext";
 import EditHeader from "../EditHeader";
 import { EditProfileImage } from "../EditProfileImage";
+import { useParams } from "next/navigation";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/firebaseConfig";
 
 export const ProfileHeaderFeat = () => {
   const [user] = useAuthState(auth);
+  const params = useParams();
   const [onEdit, setOnEdit] = useState(false);
-  const userData = useUserData();
+  const [decodedEmail, setDecodedEmail] = useState("");
+  const { userData, setUserEmail } = useUserData();
+
+  useEffect(() => {
+    const dEmail = atob(params.userId.toString());
+    setDecodedEmail(dEmail);
+  }, [params.userId]);
+
+  useEffect(() => {
+    setUserEmail(decodedEmail);
+  }, [decodedEmail, setUserEmail, user]);
 
   const openModal = () => {
     setOnEdit(true);
@@ -36,7 +47,7 @@ export const ProfileHeaderFeat = () => {
         <Search style="mt-4 " />
       </div>
       <div className="flex md:flex-row flex-col md:items-stretch items-center gap-x-16 md:px-16 px-10 -mt-[120px] relative">
-        {user && userData?.name && (
+        {userData?.email == user?.email && userData && (
           <div
             className="absolute top-36 md:right-16 right-8 flex items-center justify-center w-12 aspect-square rounded-full bg-[#0652e963] hover:bg-[#0547c99b] cursor-pointer transition-colors duration-300"
             onClick={openModal}
@@ -48,10 +59,11 @@ export const ProfileHeaderFeat = () => {
           </div>
         )}
         <div className="md:w-[280px] w-[200px] aspect-square rounded-full shadow-[0_0_8px_2px_rgba(5,19,78,0.2)] bg-white relative overflow-hidden group">
-          {user?.email ? (
+          {userData?.email && user?.email ? (
             <EditProfileImage
               currentImg={userData?.profileImg || ""}
-              userEmail={user.email}
+              userEmail={userData.email}
+              loggedInEmail={user?.email}
             />
           ) : (
             <div className="absolute w-full h-full bg-gray-300 animate-pulse"></div>
@@ -75,7 +87,7 @@ export const ProfileHeaderFeat = () => {
       <EditHeader
         onEdit={onEdit}
         closeModal={closeModal}
-        userEmail={user?.email || ""}
+        userEmail={userData?.email || ""}
         name={userData?.name || ""}
         specialty={userData?.specialty || ""}
         goal={userData?.goal || ""}

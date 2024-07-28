@@ -5,16 +5,25 @@ import { Spinner } from "@/components/Spinner";
 import { usePostsContext } from "@/context/PostsContext";
 import { useUserData } from "@/context/UserContext";
 import { where } from "firebase/firestore";
+import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
 
 export const PostedSessions = () => {
-  const userData = useUserData();
+  const params = useParams();
   const { postsData, setConditions } = usePostsContext();
+  const { userData, setUserEmail } = useUserData();
 
   useEffect(() => {
-    setConditions("component1", [where("userName", "==", "Maher Nas")]);
+    setUserEmail(params.userId.toString() + "@gmail.com");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (userData && userData.email) {
+      setConditions("component1", [where("userEmail", "==", userData.email)]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData]);
 
   return (
     <div className="p-4 flex flex-col gap-y-4 ">
@@ -22,7 +31,10 @@ export const PostedSessions = () => {
         <div>Posted Sessions</div>
         <PostSessionBtn />
       </div>
-      {postsData["component1"] && postsData["component1"].length > 0 ? (
+      {userData &&
+      userData.email &&
+      postsData["component1"] &&
+      postsData["component1"].length > 0 ? (
         postsData["component1"].map((item, idx) => (
           <PostCard
             key={idx}

@@ -1,4 +1,4 @@
-import { NavBar } from "@/components/NavBar";
+import { NavBar } from "@/components/MainNavBar";
 import { Search } from "@/components/Search";
 import React from "react";
 
