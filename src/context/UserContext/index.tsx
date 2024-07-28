@@ -7,8 +7,7 @@ import React, {
   ReactNode,
 } from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { auth, db } from "@/firebase/firebaseConfig";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { db } from "@/firebase/firebaseConfig";
 
 interface UserData {
   profileImg: string;
@@ -20,6 +19,7 @@ interface UserData {
 
 interface UserContextProps {
   userData: UserData | null;
+  setUserEmail: (email: string) => void;
 }
 
 interface UserProviderProps {
@@ -29,13 +29,13 @@ interface UserProviderProps {
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user] = useAuthState(auth);
+  const [userEmail, setUserEmail] = useState("");
   const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
-    if (user?.email) {
+    if (userEmail) {
       const usersCollection = collection(db, "users");
-      const q = query(usersCollection, where("email", "==", user.email));
+      const q = query(usersCollection, where("email", "==", userEmail));
 
       const unsubscribe = onSnapshot(
         q,
@@ -58,17 +58,19 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
       return () => unsubscribe();
     }
-  }, [user]);
+  }, [userEmail]);
 
   return (
-    <UserContext.Provider value={{ userData }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ userData, setUserEmail }}>
+      {children}
+    </UserContext.Provider>
   );
 };
 
-export const useUserData = (): UserData | null => {
+export const useUserData = (): UserContextProps => {
   const context = useContext(UserContext);
   if (!context) {
     throw new Error("useUserData must be used within a UserProvider");
   }
-  return context.userData;
+  return context;
 };

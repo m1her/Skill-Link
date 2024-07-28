@@ -2,35 +2,32 @@
 import { PostCard } from "@/components/PostCard";
 import { Spinner } from "@/components/Spinner";
 import { usePostsContext } from "@/context/PostsContext";
-import { useUserData } from "@/context/UserContext";
-import { where } from "firebase/firestore";
+import { auth } from "@/firebase/firebaseConfig";
 import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-export const FollowedSessions = () => {
+export const SessionsFeat = () => {
+  const [user] = useAuthState(auth);
   const params = useParams();
   const { postsData, setConditions } = usePostsContext();
-  const { userData, setUserEmail } = useUserData();
 
   useEffect(() => {
-    setUserEmail(params.userId.toString() + "@gmail.com");
+    setConditions("component3", []);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (userData && userData.email) {
-      setConditions("component2", [
-        where("followers", "array-contains", userData?.email),
-      ]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData]);
-
+    console.log(postsData);
+  }, [postsData]);
   return (
-    <div className="p-4 flex flex-col gap-y-4 ">
-      <div className="text-black text-xl font-semibold">Followed Sessions</div>
-      {postsData["component2"] && postsData["component2"].length > 0 ? (
-        postsData["component2"].map((item, idx) => (
+    <div className="flex flex-col gap-y-2 pt-2">
+      {user &&
+      user.email &&
+      postsData["component3"] &&
+      postsData["component3"].length > 0 ? (
+        postsData["component3"].map((item, idx) => (
           <PostCard
             key={idx}
             title={item.title}
@@ -38,15 +35,15 @@ export const FollowedSessions = () => {
             name={item.userName}
             date={item.date}
             time={item.time}
-            id={item.id}
-            followers={item.followers}
             email={item.userEmail}
-            LoggedinUserEmail={userData?.email}
+            followers={item.followers}
+            id={item.id}
+            LoggedinUserEmail={user.email}
           />
         ))
       ) : postsData["component2"] && postsData["component2"].length == 0 ? (
         <div className="text-gray-400 font-light">
-          This user doesn&lsquo;t followed any posts yet...
+          No session have been found...
         </div>
       ) : (
         <div className="w-full flex justify-center h-8">

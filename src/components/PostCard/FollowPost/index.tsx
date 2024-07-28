@@ -19,7 +19,7 @@ export const FollowPost = ({
 }: {
   id: string;
   email: string;
-  LoggedinUserEmail?: string;
+  LoggedinUserEmail: string | undefined | null;
   followers: string[];
 }) => {
   const followHandler = async () => {
@@ -56,7 +56,9 @@ export const FollowPost = ({
 
   return (
     <>
-      {followers && LoggedinUserEmail && followers.includes(LoggedinUserEmail) ? (
+      {followers &&
+      LoggedinUserEmail &&
+      followers.includes(LoggedinUserEmail) ? (
         <div
           className="text-sm text-[#ffffff] bg-[#0652e9] px-6 py-1 border border-[#0652e9] rounded-full w-fit absolute bottom-4 right-4 cursor-pointer hover:bg-[#0443c2] transition-colors duration-300"
           onClick={usFollowHandler}

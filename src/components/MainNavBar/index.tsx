@@ -14,12 +14,28 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 export const NavBar = () => {
   const [user] = useAuthState(auth);
   const [menu, setMenu] = useState<boolean>(false);
   const [profile, setProfile] = useState<boolean>(false);
+  const overlayy = useRef(null);
+
+  const onClick: MouseEventHandler = useCallback(
+    (e) => {
+      if (e.target === overlayy.current) {
+        setProfile(false);
+      }
+    },
+    [overlayy]
+  );
 
   useEffect(() => {
     if (menu) {
@@ -67,6 +83,13 @@ export const NavBar = () => {
               {user.email}
               <div className="h-0.5 bg-white w-full scale-x-0 group-hover:scale-x-100 transition-all duration-300" />
             </div>
+            {profile && (
+              <div
+                ref={overlayy}
+                className="fixed z-40 left-0 right-0 top-0 bottom-0 mx-auto bg-transparent p-10"
+                onClick={onClick}
+              />
+            )}
             <div
               className={`flex flex-col gap-y-2 bg-[#485e7f]/70 px-4 rounded justify-center text-base w-[140px] absolute top-8 -right-4
             ${

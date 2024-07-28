@@ -25,7 +25,7 @@ export const PostCard = ({
   email: string;
   followers: string[];
   id: string;
-  LoggedinUserEmail?: string;
+  LoggedinUserEmail: string | undefined | null;
 }) => {
   const overlay = useRef(null);
   const [onCrud, setOnCrud] = useState<boolean>(false);
