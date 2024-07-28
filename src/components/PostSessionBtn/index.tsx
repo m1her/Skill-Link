@@ -1,13 +1,7 @@
 "use client";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import Modal from "../Modal";
 import { TextInput } from "../Input";
 import { Button } from "../Button";
@@ -19,7 +13,7 @@ import { useUserData } from "@/context/UserContext";
 
 export const PostSessionBtn = () => {
   const { showAlert } = useAlert();
-  const userData = useUserData();
+  const { userData } = useUserData();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [postData, setPostData] = useState<{ [k: string]: string }>({
     title: "",
