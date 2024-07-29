@@ -10,7 +10,6 @@ export function isDisabledHandler({
 
   const timeDifferenceInMinutes =
     (sessionDateTime.getTime() - currentDateTime.getTime()) / (1000 * 60);
-  console.log(sessionDateTime, currentDateTime, timeDifferenceInMinutes);
 
   let bgColor = "bg-white";
   let isDisabled = false;

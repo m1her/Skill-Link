@@ -60,6 +60,8 @@ export const SignupFeat = () => {
               email: signupData.email,
               name: signupData.name,
               specialty: signupData.specialty,
+              reviewers: [],
+              reviews: 0,
               goal: "No goal set by the user",
               profileImg:
                 "https://firebasestorage.googleapis.com/v0/b/skill-link-98004.appspot.com/o/defaultpfpimg.jpg?alt=media&token=86693fa1-a927-4526-ac75-6dc49edabeb0",

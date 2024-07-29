@@ -17,6 +17,8 @@ interface UserData {
   email: string;
   specialty: string;
   goal: string;
+  reviewers: string[];
+  reviews: number;
 }
 
 interface UserContextProps {
@@ -52,6 +54,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
               email: doc.data().email,
               specialty: doc.data().specialty,
               goal: doc.data().goal,
+              reviewers: doc.data().reviewers,
+              reviews: doc.data().reviews,
             });
           }
         },

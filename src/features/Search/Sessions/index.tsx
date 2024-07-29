@@ -38,7 +38,7 @@ export const SessionsFeat = () => {
   }, [postsData, searchParams]);
 
   return (
-    <div className="flex flex-col gap-y-2 pt-2">
+    <div className="flex flex-col gap-y-2 pt-2 h-[85vh] overflow-y-scroll">
       {user && user.email && filteredPosts && filteredPosts.length > 0 ? (
         filteredPosts.map((item, idx) => (
           <PostCard

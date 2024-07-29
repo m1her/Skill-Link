@@ -18,7 +18,7 @@ const Authlayout = ({
     <div>
       <div className="bg-[url(/profileBG.jpg)] w-full bg-cover bg-center">
         {children}
-        <div className="md:px-16 px-10 py-4 lg:h-screen h-[120vh] mt-16 grid lg:grid-cols-2 grid-cols-1 gap-4">
+        <div className="md:px-16 px-10 py-4 mt-16 grid lg:grid-cols-2 grid-cols-1 gap-4">
           <Suspense>{sessions}</Suspense>
           <Suspense>{people}</Suspense>
         </div>
