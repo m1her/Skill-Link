@@ -7,9 +7,10 @@ import { TextInput } from "../Input";
 import { Button } from "../Button";
 import { useAlert } from "@/context/AlertContext";
 import { object } from "@/util/validation";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useUserData } from "@/context/UserContext";
+import LinkBrandsDropDown from "../LinkBrandsDropDown";
 
 export const PostSessionBtn = () => {
   const { showAlert } = useAlert();
@@ -20,6 +21,8 @@ export const PostSessionBtn = () => {
     description: "",
     date: "",
     time: "",
+    link: "",
+    linkBrand: "",
   });
 
   const [errors, setErrors] = useState<{ [k: string]: string }>({
@@ -27,6 +30,8 @@ export const PostSessionBtn = () => {
     description: "",
     date: "",
     time: "",
+    link: "",
+    linkBrand: "",
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,6 +42,8 @@ export const PostSessionBtn = () => {
       description: ["string", "required"],
       date: ["required"],
       time: ["required"],
+      link: ["required", "url"],
+      linkBrand: ["required"],
     });
     const result = userSchema.validate(postData);
     setErrors(result.errors);
@@ -46,6 +53,8 @@ export const PostSessionBtn = () => {
         description: "",
         date: "",
         time: "",
+        link: "",
+        linkBrand: "",
       });
     }, 2000);
     return result.valid;
@@ -76,6 +85,8 @@ export const PostSessionBtn = () => {
               description: "",
               date: "",
               time: "",
+              link: "",
+              linkBrand: "",
             });
           })
           .catch(() => {
@@ -84,6 +95,8 @@ export const PostSessionBtn = () => {
               description: "",
               date: "",
               time: "",
+              link: "",
+              linkBrand: "",
             });
             setIsLoading(false);
           });
@@ -92,7 +105,9 @@ export const PostSessionBtn = () => {
     [postData, showAlert, userData, validate]
   );
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { value, name } = e.target;
     setPostData((prev) => ({
       ...prev,
@@ -163,6 +178,23 @@ export const PostSessionBtn = () => {
                 value={postData?.time}
                 error={errors?.time}
                 errorMsg={errors?.time}
+              />
+            </div>
+            <div className="w-full grid grid-cols-2 gap-x-4">
+              <LinkBrandsDropDown
+                changeHandler={handleChange}
+                value={postData?.linkBrand}
+              />
+              <TextInput
+                id="session-link"
+                name="link"
+                type="text"
+                label="Session Link"
+                placeholder="Enter Session Link"
+                onChange={handleChange}
+                value={postData?.link}
+                error={errors?.link}
+                errorMsg={errors?.link}
               />
             </div>
             <div className="flex justify-end">

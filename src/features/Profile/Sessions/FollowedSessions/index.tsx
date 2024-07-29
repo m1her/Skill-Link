@@ -41,6 +41,8 @@ export const FollowedSessions = () => {
             id={item.id}
             followers={item.followers}
             email={item.userEmail}
+            link={item.link}
+            linkBrand={item.linkBrand}
             LoggedinUserEmail={userData?.email}
           />
         ))

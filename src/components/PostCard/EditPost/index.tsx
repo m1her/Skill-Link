@@ -1,6 +1,7 @@
 import { Alert } from "@/components/Alert";
 import { Button } from "@/components/Button";
 import { TextInput } from "@/components/Input";
+import LinkBrandsDropDown from "@/components/LinkBrandsDropDown";
 import Modal from "@/components/Modal";
 import { useAlert } from "@/context/AlertContext";
 import { db } from "@/firebase/firebaseConfig";
@@ -27,6 +28,8 @@ export const EditPost = ({
   description,
   date,
   time,
+  link,
+  linkBrand,
   id,
   setOnCrud,
 }: {
@@ -36,6 +39,8 @@ export const EditPost = ({
   description: string;
   date: string;
   time: string;
+  link: string;
+  linkBrand: string;
 }) => {
   const { showAlert } = useAlert();
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
@@ -44,6 +49,8 @@ export const EditPost = ({
     description: "",
     date: "",
     time: "",
+    link: "",
+    linkBrand: "",
   });
 
   const [errors, setErrors] = useState<{ [k: string]: string }>({
@@ -51,6 +58,8 @@ export const EditPost = ({
     description: "",
     date: "",
     time: "",
+    link: "",
+    linkBrand: "",
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -61,6 +70,8 @@ export const EditPost = ({
       description: ["string", "required"],
       date: ["required"],
       time: ["required"],
+      link: ["required", "url"],
+      linkBrand: ["required"],
     });
     const result = userSchema.validate(postData);
     setErrors(result.errors);
@@ -70,6 +81,8 @@ export const EditPost = ({
         description: "",
         date: "",
         time: "",
+        link: "",
+        linkBrand: "",
       });
     }, 2000);
     return result.valid;
@@ -87,6 +100,8 @@ export const EditPost = ({
       description: description,
       date: date,
       time: time,
+      link: link,
+      linkBrand: linkBrand,
     });
   };
 
@@ -124,6 +139,8 @@ export const EditPost = ({
                   description: "",
                   date: "",
                   time: "",
+                  link: "",
+                  linkBrand: "",
                 });
                 setOnCrud(false);
                 setIsLoading(false);
@@ -135,7 +152,9 @@ export const EditPost = ({
     [validate, id, postData, dismissHandler, showAlert, setOnCrud]
   );
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { value, name } = e.target;
     setPostData((prev) => ({
       ...prev,
@@ -149,8 +168,10 @@ export const EditPost = ({
       description: description,
       date: date,
       time: time,
+      link: link,
+      linkBrand: linkBrand,
     });
-  }, [date, description, time, title]);
+  }, [date, description, link, linkBrand, time, title]);
 
   return (
     <div>
@@ -211,6 +232,23 @@ export const EditPost = ({
                   value={postData?.time}
                   error={errors?.time}
                   errorMsg={errors?.time}
+                />
+              </div>
+              <div className="w-full grid grid-cols-2 gap-x-4">
+                <LinkBrandsDropDown
+                  changeHandler={handleChange}
+                  value={postData?.linkBrand}
+                />
+                <TextInput
+                  id="session-link"
+                  name="link"
+                  type="text"
+                  label="Session Link"
+                  placeholder="Enter Session Link"
+                  onChange={handleChange}
+                  value={postData?.link}
+                  error={errors?.link}
+                  errorMsg={errors?.link}
                 />
               </div>
               <div className="flex justify-between items-center gap-x-4">

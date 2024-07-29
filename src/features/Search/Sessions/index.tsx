@@ -51,6 +51,8 @@ export const SessionsFeat = () => {
             email={item.userEmail}
             followers={item.followers}
             id={item.id}
+            link={item.link}
+            linkBrand={item.linkBrand}
             LoggedinUserEmail={user.email}
           />
         ))

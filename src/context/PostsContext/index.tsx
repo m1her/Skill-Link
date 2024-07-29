@@ -23,6 +23,8 @@ export interface PostData {
   userEmail: string;
   userName: string;
   followers: string[];
+  link: string;
+  linkBrand: string;
 }
 
 interface PostsContextProps {

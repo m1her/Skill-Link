@@ -60,14 +60,14 @@ export const FollowPost = ({
       LoggedinUserEmail &&
       followers.includes(LoggedinUserEmail) ? (
         <div
-          className="text-sm text-[#ffffff] bg-[#0652e9] px-6 py-1 border border-[#0652e9] rounded-full w-fit absolute bottom-4 right-4 cursor-pointer hover:bg-[#0443c2] transition-colors duration-300"
+          className="text-sm text-[#ffffff] bg-[#0652e9] px-6 py-1 border border-[#0652e9] rounded-full w-fit absolute z-30 bottom-4 right-4 cursor-pointer hover:bg-[#0443c2] transition-colors duration-300"
           onClick={usFollowHandler}
         >
           followed
         </div>
       ) : (
         <div
-          className="text-sm text-[#0652e9] px-6 py-1 border border-[#0652e9] rounded-full w-fit absolute bottom-4 right-4 cursor-pointer hover:bg-[#0652e9]/5 transition-colors duration-300"
+          className="text-sm text-[#0652e9] px-6 py-1 border border-[#0652e9] rounded-full w-fit absolute z-30 bottom-4 right-4 cursor-pointer hover:bg-[#0652e9]/5 transition-colors duration-300"
           onClick={followHandler}
         >
           follow
