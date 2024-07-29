@@ -10,6 +10,7 @@ import { EditProfileImage } from "../EditProfileImage";
 import { useParams } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebaseConfig";
+import StarRating from "@/components/StarRating";
 
 export const ProfileHeaderFeat = () => {
   const [user] = useAuthState(auth);
@@ -73,8 +74,16 @@ export const ProfileHeaderFeat = () => {
           {userData?.name ? (
             <>
               <div className="flex items-center gap-x-6">
-                <div className="text-xl font-semibold">{userData.name}</div>
-                <div className="text-sm">⭐⭐⭐⭐⭐</div>
+                <div className="text-xl font-semibold whitespace-nowrap">{userData.name}</div>
+                <div className="text-sm">
+                  <StarRating
+                    userEmail={userData.email}
+                    currentUser={user?.email}
+                    reviews={userData.reviews}
+                    reviewers={userData.reviewers}
+                    readOnly={userData.email == user?.email}
+                  />
+                </div>
               </div>
               <div>{userData.specialty}</div>
               <div>&ldquo; {userData.goal} &ldquo;</div>

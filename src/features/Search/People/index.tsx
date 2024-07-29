@@ -5,15 +5,19 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { Spinner } from "@/components/Spinner";
 import { useSearchParams } from "next/navigation";
+import { useUserData } from "@/context/UserContext";
 
 interface userType {
   name: string;
   profileImg: string;
   specialty: string;
   email: string;
+  reviewers: string[];
+  reviews: number;
 }
 
 export const PeopleFeat = () => {
+  const { user } = useUserData();
   const [users, setUsers] = useState<userType[] | null>();
   const searchParams = useSearchParams();
   const [filteredUsers, setFilteredUsers] = useState<userType[]>();
@@ -53,29 +57,22 @@ export const PeopleFeat = () => {
     }
   }, [searchParams, users]);
 
-  const encodeEmail = (email: string) => {
-    return btoa(email);
-  };
+
 
   return (
-    <div className="flex flex-col gap-y-2 pt-2">
+    <div className="flex flex-col gap-y-2 pt-2 h-[85vh] overflow-y-scroll">
       {filteredUsers && filteredUsers.length > 0 ? (
         filteredUsers.map(
-          (
-            user: {
-              name: string;
-              profileImg: string;
-              specialty: string;
-              email: string;
-            },
-            idx: React.Key | null | undefined
-          ) => (
+          (user: userType, idx: React.Key | null | undefined) => (
             <UserCard
               key={idx}
               name={user.name}
               profileImg={user.profileImg}
               specialty={user.specialty}
-              email={encodeEmail(user.email)}
+              email={user.email}
+              currentUserEmail={user.email}
+              reviewers={user.reviewers}
+              reviews={user.reviews}
             />
           )
         )

@@ -22,7 +22,7 @@ export const PostSessionBtn = () => {
     date: "",
     time: "",
     link: "",
-    linkBrand: "",
+    linkBrand: "YouTube",
   });
 
   const [errors, setErrors] = useState<{ [k: string]: string }>({
@@ -64,7 +64,7 @@ export const PostSessionBtn = () => {
     async (event: FormEvent) => {
       event.preventDefault();
 
-      if (validate() && userData) {
+      if (validate() && userData !== null) {
         setIsLoading(true);
         addDoc(collection(db, "posts"), {
           ...postData,

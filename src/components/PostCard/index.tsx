@@ -12,7 +12,7 @@ import Link from "next/link";
 import { isDisabledHandler } from "@/util/sessionTime";
 
 const iconMap: { [key: string]: IconProp } = {
-  Youtube: faYoutube,
+  YouTube: faYoutube,
   Discord: faDiscord,
   Zoom: faVideo,
   "Google Meets": faVideo,
