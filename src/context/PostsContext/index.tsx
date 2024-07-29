@@ -14,7 +14,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 
-interface PostData {
+export interface PostData {
   date: string;
   description: string;
   id: string;

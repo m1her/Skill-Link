@@ -1,14 +1,21 @@
 "use client";
 import Link from "next/link";
-import React, { MouseEventHandler, useCallback, useRef, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React, {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { auth } from "@/firebase/firebaseConfig";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { useUserData } from "@/context/UserContext";
 
-export const SubNavBar = ({children}: {children: React.ReactNode}) => {
-  const [user] = useAuthState(auth);
+export const SubNavBar = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useUserData();
   const [profile, setProfile] = useState<boolean>(false);
+  const [encodedEmail, setEncodedEmail] = useState("");
   const overlay = useRef(null);
 
   const onClick: MouseEventHandler = useCallback(
@@ -19,6 +26,17 @@ export const SubNavBar = ({children}: {children: React.ReactNode}) => {
     },
     [overlay]
   );
+
+  const encodeEmail = (email: string) => {
+    return btoa(email);
+  };
+
+  useEffect(() => {
+    if (user && user.email) {
+      setEncodedEmail(encodeEmail(user.email));
+    }
+  }, [user]);
+
   return (
     <div>
       <div className="md:px-16 px-10 py-4 flex items-start justify-between w-full">
@@ -54,7 +72,7 @@ export const SubNavBar = ({children}: {children: React.ReactNode}) => {
           } transition-all duration-300 overflow-hidden
           `}
             >
-              <Link href="/profile" className="text-sm group">
+              <Link href={`/profile/${encodedEmail}`} className="text-sm group">
                 Profile
                 <div className="h-0.5 bg-white w-0 group-hover:w-full transition-all duration-300" />
               </Link>
@@ -76,7 +94,6 @@ export const SubNavBar = ({children}: {children: React.ReactNode}) => {
       </div>
 
       {children}
-
     </div>
   );
 };
