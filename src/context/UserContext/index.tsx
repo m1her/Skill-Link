@@ -7,7 +7,9 @@ import React, {
   ReactNode,
 } from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
+import { auth, db } from "@/firebase/firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { User } from "firebase/auth";
 
 interface UserData {
   profileImg: string;
@@ -20,6 +22,7 @@ interface UserData {
 interface UserContextProps {
   userData: UserData | null;
   setUserEmail: (email: string) => void;
+  user: User | null | undefined;
 }
 
 interface UserProviderProps {
@@ -29,6 +32,7 @@ interface UserProviderProps {
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+  const [user] = useAuthState(auth);
   const [userEmail, setUserEmail] = useState("");
   const [userData, setUserData] = useState<UserData | null>(null);
 
@@ -61,7 +65,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, [userEmail]);
 
   return (
-    <UserContext.Provider value={{ userData, setUserEmail }}>
+    <UserContext.Provider value={{ userData, setUserEmail, user }}>
       {children}
     </UserContext.Provider>
   );

@@ -4,6 +4,7 @@ import { UserCard } from "./UserCard";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { Spinner } from "@/components/Spinner";
+import { useSearchParams } from "next/navigation";
 
 interface userType {
   name: string;
@@ -14,6 +15,9 @@ interface userType {
 
 export const PeopleFeat = () => {
   const [users, setUsers] = useState<userType[] | null>();
+  const searchParams = useSearchParams();
+  const [filteredUsers, setFilteredUsers] = useState<userType[]>();
+
   useEffect(() => {
     const postsCollection = collection(db, "users");
     const q = query(postsCollection, where("name", "!=", "asd"));
@@ -37,14 +41,26 @@ export const PeopleFeat = () => {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (users && users.length > 0) {
+      const search = searchParams.get("s");
+      const filtered = users.filter((item) =>
+        item.name
+          .toLocaleLowerCase()
+          .includes(search?.toLocaleLowerCase() || "")
+      );
+      setFilteredUsers([...filtered]);
+    }
+  }, [searchParams, users]);
+
   const encodeEmail = (email: string) => {
     return btoa(email);
   };
 
   return (
     <div className="flex flex-col gap-y-2 pt-2">
-      {users && users.length > 0 ? (
-        users.map(
+      {filteredUsers && filteredUsers.length > 0 ? (
+        filteredUsers.map(
           (
             user: {
               name: string;
@@ -63,7 +79,7 @@ export const PeopleFeat = () => {
             />
           )
         )
-      ) : users && users.length == 0 ? (
+      ) : filteredUsers && filteredUsers.length == 0 ? (
         <div className="text-gray-400 font-light">
           No users have been found...
         </div>

@@ -1,13 +1,21 @@
 "use client";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
-export const DarkSearch = () => {
+export const DarkSearch = ({ defaultValue }: { defaultValue?: string }) => {
   const [searchValue, setSearchValue] = useState<string>("");
+  const router = useRouter();
 
   const changeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
+  };
+
+  const keyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      router.push(`/search?s=${searchValue}`);
+    }
   };
   return (
     <div className="flex justify-center w-full mt-4">
@@ -20,10 +28,13 @@ export const DarkSearch = () => {
           value={searchValue}
           placeholder="Search..."
           onChange={changeHandler}
+          onKeyDown={keyDownHandler}
+          defaultValue={defaultValue}
         />
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
           className="text-[#061048] md:w-4 w-3.5 md:h-4 h-3.5 cursor-pointer"
+          onClick={() => router.push(`/search?s=${searchValue}`)}
         />
       </div>
     </div>

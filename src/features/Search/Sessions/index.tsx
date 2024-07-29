@@ -1,33 +1,46 @@
 "use client";
 import { PostCard } from "@/components/PostCard";
 import { Spinner } from "@/components/Spinner";
-import { usePostsContext } from "@/context/PostsContext";
+import { PostData, usePostsContext } from "@/context/PostsContext";
 import { auth } from "@/firebase/firebaseConfig";
-import { useParams } from "next/navigation";
-import React, { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export const SessionsFeat = () => {
   const [user] = useAuthState(auth);
-  const params = useParams();
   const { postsData, setConditions } = usePostsContext();
+  const searchParams = useSearchParams();
+  const [filteredPosts, setFilteredPosts] = useState<PostData[]>();
 
   useEffect(() => {
     setConditions("component3", []);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    console.log(postsData);
-  }, [postsData]);
+    if (postsData["component3"] && postsData["component3"].length > 0) {
+      const search = searchParams.get("s");
+      const filtered = postsData["component3"].filter(
+        (item) =>
+          item.title
+            .toLocaleLowerCase()
+            .includes(search?.toLocaleLowerCase() || "") ||
+          item.description
+            .toLocaleLowerCase()
+            .includes(search?.toLocaleLowerCase() || "") ||
+          item.userName
+            .toLocaleLowerCase()
+            .includes(search?.toLocaleLowerCase() || "")
+      );
+      setFilteredPosts([...filtered]);
+    }
+  }, [postsData, searchParams]);
+
   return (
     <div className="flex flex-col gap-y-2 pt-2">
-      {user &&
-      user.email &&
-      postsData["component3"] &&
-      postsData["component3"].length > 0 ? (
-        postsData["component3"].map((item, idx) => (
+      {user && user.email && filteredPosts && filteredPosts.length > 0 ? (
+        filteredPosts.map((item, idx) => (
           <PostCard
             key={idx}
             title={item.title}
@@ -41,7 +54,7 @@ export const SessionsFeat = () => {
             LoggedinUserEmail={user.email}
           />
         ))
-      ) : postsData["component2"] && postsData["component2"].length == 0 ? (
+      ) : filteredPosts?.length == 0 ? (
         <div className="text-gray-400 font-light">
           No session have been found...
         </div>

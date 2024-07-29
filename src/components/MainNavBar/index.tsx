@@ -3,7 +3,6 @@ import { auth } from "@/firebase/firebaseConfig";
 import {
   faBars,
   faCogs,
-  faDoorOpen,
   faEnvelope,
   faHandshake,
   faInfoCircle,
@@ -11,7 +10,6 @@ import {
   faSignOut,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React, {
@@ -21,11 +19,13 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useUserData } from "@/context/UserContext";
 
 export const NavBar = () => {
-  const [user] = useAuthState(auth);
+  const { user } = useUserData();
   const [menu, setMenu] = useState<boolean>(false);
   const [profile, setProfile] = useState<boolean>(false);
+  const [encodedEmail, setEncodedEmail] = useState("");
   const overlayy = useRef(null);
 
   const onClick: MouseEventHandler = useCallback(
@@ -47,6 +47,16 @@ export const NavBar = () => {
       document.body.style.overflow = "auto";
     };
   }, [menu]);
+
+  const encodeEmail = (email: string) => {
+    return btoa(email);
+  };
+
+  useEffect(() => {
+    if (user && user.email) {
+      setEncodedEmail(encodeEmail(user.email));
+    }
+  }, [user]);
 
   return (
     <div className="w-full md:px-16 px-10 py-4 flex justify-between">
@@ -91,13 +101,13 @@ export const NavBar = () => {
               />
             )}
             <div
-              className={`flex flex-col gap-y-2 bg-[#485e7f]/70 px-4 rounded justify-center text-base w-[140px] absolute top-8 -right-4
+              className={`flex flex-col gap-y-2 bg-[#485e7f]/70 px-4 rounded justify-center text-base w-[140px] absolute top-8 -right-4 z-50
             ${
               profile ? "h-[80px]" : "h-0"
             } transition-all duration-300 overflow-hidden
             `}
             >
-              <Link href="/profile" className="text-sm group">
+              <Link href={`/profile/${encodedEmail}`} className="text-sm group">
                 Profile
                 <div className="h-0.5 bg-white w-0 group-hover:w-full transition-all duration-300" />
               </Link>
