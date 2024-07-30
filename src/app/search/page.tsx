@@ -1,12 +1,14 @@
 import { DarkSearch } from "@/components/DarkSearch";
 import { SubNavBar } from "@/components/SubNavBar";
-import React from "react";
+import React, { Suspense } from "react";
 
 const SearchPage = () => {
   return (
     <div>
       <SubNavBar>
-        <DarkSearch />
+        <Suspense>
+          <DarkSearch />
+        </Suspense>
       </SubNavBar>
     </div>
   );
