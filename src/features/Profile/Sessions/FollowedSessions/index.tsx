@@ -10,7 +10,7 @@ import React, { useEffect } from "react";
 export const FollowedSessions = () => {
   const params = useParams();
   const { postsData, setConditions } = usePostsContext();
-  const { userData, setUserEmail } = useUserData();
+  const { userData, setUserEmail, user } = useUserData();
 
   useEffect(() => {
     setUserEmail(params.userId.toString() + "@gmail.com");
@@ -43,7 +43,7 @@ export const FollowedSessions = () => {
             email={item.userEmail}
             link={item.link}
             linkBrand={item.linkBrand}
-            LoggedinUserEmail={userData?.email}
+            LoggedinUserEmail={user?.email}
           />
         ))
       ) : postsData["component2"] && postsData["component2"].length == 0 ? (

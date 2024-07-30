@@ -13,7 +13,7 @@ export const EditProfileImage = ({
 }: {
   currentImg: string;
   userEmail: string;
-  loggedInEmail: string;
+  loggedInEmail: string | null | undefined;
 }) => {
   const { showAlert } = useAlert();
   const [image, setImage] = useState<string>("");

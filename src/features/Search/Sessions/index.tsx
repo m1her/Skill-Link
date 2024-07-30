@@ -39,7 +39,7 @@ export const SessionsFeat = () => {
 
   return (
     <div className="flex flex-col gap-y-2 pt-2 h-[85vh] overflow-y-scroll">
-      {user && user.email && filteredPosts && filteredPosts.length > 0 ? (
+      {filteredPosts && filteredPosts.length > 0 ? (
         filteredPosts.map((item, idx) => (
           <PostCard
             key={idx}
@@ -53,7 +53,7 @@ export const SessionsFeat = () => {
             id={item.id}
             link={item.link}
             linkBrand={item.linkBrand}
-            LoggedinUserEmail={user.email}
+            LoggedinUserEmail={user?.email}
           />
         ))
       ) : filteredPosts?.length == 0 ? (

@@ -10,6 +10,7 @@ import { faYoutube, faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { isDisabledHandler } from "@/util/sessionTime";
+import { useUserData } from "@/context/UserContext";
 
 const iconMap: { [key: string]: IconProp } = {
   YouTube: faYoutube,
@@ -44,6 +45,7 @@ export const PostCard = ({
   LoggedinUserEmail: string | undefined | null;
 }) => {
   const overlay = useRef(null);
+  const { user } = useUserData();
   const [onCrud, setOnCrud] = useState<boolean>(false);
   const { isDisabled, bgColor } = isDisabledHandler({ date, time });
 
@@ -111,7 +113,7 @@ export const PostCard = ({
             />
           </>
         )}
-        {LoggedinUserEmail !== email && (
+        {LoggedinUserEmail !== email && user && (
           <FollowPost
             id={id}
             email={email}
