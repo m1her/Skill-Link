@@ -80,7 +80,7 @@ const StarRating: React.FC<StarRatingProps> = ({
         return (
           <svg
             key={index}
-            className={`w-6 h-6 cursor-pointer transition-colors duration-200 ${
+            className={`lg:w-6 lg:h-6 md:h-4 md:w-4 w-3 h-3 cursor-pointer transition-colors duration-200 ${
               starValue <= (hover || rating)
                 ? "text-yellow-400"
                 : "text-gray-300"

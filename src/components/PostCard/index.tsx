@@ -69,7 +69,7 @@ export const PostCard = ({
       <div
         className={`p-4 rounded flex flex-col gap-y-2 shadow-[0_0_6px_0_rgba(0,0,0,0.1)] relative ${bgColor}`}
       >
-        <div className="text-lg font-semibold text-[#0e3f9f] flex items-center gap-x-2">
+        <div className="text-lg font-semibold text-[#0e3f9f] flex md:flex-row flex-col md:items-center gap-x-2 gap-y-1">
           {title}
           <div className="flex items-center gap-x-1 text-xs">
             <FontAwesomeIcon icon={iconMap[linkBrand]} />

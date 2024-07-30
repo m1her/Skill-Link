@@ -33,9 +33,10 @@ export const UserCard = ({
         <Image src={profileImg} alt={""} fill />
       </div>
       <div>
-        <div className="flex text-base items-center gap-x-2">
-          <span className="font-medium">{name}</span>
-          <span className="text-gray-500">|</span>
+        <div className="flex md:flex-row flex-col text-base md:items-center items-start gap-x-2 md:mb-0 mb-2">
+          <span className="md:font-medium font-normal pr-2 md:border-r-2 border-r-0 border-gray-500 whitespace-nowrap">
+            {name}
+          </span>
           <StarRating
             userEmail={email}
             currentUser={currentUserEmail}
