@@ -11,7 +11,7 @@ import React, { useEffect } from "react";
 export const PostedSessions = () => {
   const params = useParams();
   const { postsData, setConditions } = usePostsContext();
-  const { userData, setUserEmail } = useUserData();
+  const { userData, setUserEmail, user } = useUserData();
 
   useEffect(() => {
     setUserEmail(params.userId.toString() + "@gmail.com");
@@ -29,7 +29,9 @@ export const PostedSessions = () => {
     <div className="p-4 flex flex-col gap-y-4 ">
       <div className="text-black text-xl font-semibold flex items-center gap-x-4">
         <div>Posted Sessions</div>
-        <PostSessionBtn />
+        {userData?.email === user?.email && user?.email != null && (
+          <PostSessionBtn />
+        )}
       </div>
       {userData &&
       userData.email &&
@@ -48,7 +50,7 @@ export const PostedSessions = () => {
             link={item.link}
             linkBrand={item.linkBrand}
             email={item.userEmail}
-            LoggedinUserEmail={userData?.email}
+            LoggedinUserEmail={user?.email}
           />
         ))
       ) : postsData["component1"] && postsData["component1"].length == 0 ? (

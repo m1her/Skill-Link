@@ -60,7 +60,7 @@ export const ProfileHeaderFeat = () => {
           </div>
         )}
         <div className="md:w-[280px] w-[200px] aspect-square rounded-full shadow-[0_0_8px_2px_rgba(5,19,78,0.2)] bg-white relative overflow-hidden group">
-          {userData?.email && user?.email ? (
+          {userData?.email ? (
             <EditProfileImage
               currentImg={userData?.profileImg || ""}
               userEmail={userData.email}

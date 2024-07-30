@@ -11,9 +11,11 @@ import { auth } from "@/firebase/firebaseConfig";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useUserData } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
 export const SubNavBar = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUserData();
+  const router = useRouter();
   const [profile, setProfile] = useState<boolean>(false);
   const [encodedEmail, setEncodedEmail] = useState("");
   const overlay = useRef(null);
@@ -78,7 +80,10 @@ export const SubNavBar = ({ children }: { children: React.ReactNode }) => {
               </Link>
               <div
                 className="text-sm cursor-pointer group"
-                onClick={() => auth.signOut()}
+                onClick={() => {
+                  router.push("/");
+                  auth.signOut();
+                }}
               >
                 Logout
                 <div className="h-0.5 bg-white w-0 group-hover:w-full transition-all duration-300" />

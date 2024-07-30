@@ -20,9 +20,11 @@ import React, {
   useState,
 } from "react";
 import { useUserData } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
 export const NavBar = () => {
   const { user } = useUserData();
+  const router = useRouter();
   const [menu, setMenu] = useState<boolean>(false);
   const [profile, setProfile] = useState<boolean>(false);
   const [encodedEmail, setEncodedEmail] = useState("");
@@ -113,7 +115,10 @@ export const NavBar = () => {
               </Link>
               <div
                 className="text-sm cursor-pointer group"
-                onClick={() => auth.signOut()}
+                onClick={() => {
+                  router.push("/");
+                  auth.signOut();
+                }}
               >
                 Logout
                 <div className="h-0.5 bg-white w-0 group-hover:w-full transition-all duration-300" />
@@ -154,7 +159,10 @@ export const NavBar = () => {
               </Link>
               <div
                 className="text-sm cursor-pointer group ml-4 -mt-3"
-                onClick={() => auth.signOut()}
+                onClick={() => {
+                  router.push("/");
+                  auth.signOut();
+                }}
               >
                 <FontAwesomeIcon icon={faSignOut} className="w-3 h-3 mr-1" />{" "}
                 Logout
