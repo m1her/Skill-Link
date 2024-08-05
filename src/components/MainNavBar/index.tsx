@@ -2,6 +2,7 @@
 import { auth } from "@/firebase/firebaseConfig";
 import {
   faBars,
+  faBell,
   faCogs,
   faEnvelope,
   faHandshake,
@@ -21,12 +22,14 @@ import React, {
 } from "react";
 import { useUserData } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
+import { NotificationItem } from "../NotificationItem";
 
 export const NavBar = () => {
   const { user } = useUserData();
   const router = useRouter();
   const [menu, setMenu] = useState<boolean>(false);
   const [profile, setProfile] = useState<boolean>(false);
+  const [notifications, setNotifications] = useState<boolean>(false);
   const [encodedEmail, setEncodedEmail] = useState("");
   const overlayy = useRef(null);
 
@@ -34,6 +37,7 @@ export const NavBar = () => {
     (e) => {
       if (e.target === overlayy.current) {
         setProfile(false);
+        setNotifications(false);
       }
     },
     [overlayy]
@@ -84,10 +88,9 @@ export const NavBar = () => {
         </Link>
         <Link href="#join-us" className="group cursor-pointer">
           <div>Join Us</div>
-          <div className="h-0.5 bg-white w-full scale-x-0 group-hover:scale-x-100 transition-all duration-300" />
         </Link>
         {user ? (
-          <div className="relative">
+          <div className="relative flex items-center gap-x-2">
             <div
               className="truncate w-20 select-none cursor-pointer relative group"
               onClick={() => setProfile((prev) => !prev)}
@@ -95,13 +98,34 @@ export const NavBar = () => {
               {user.email}
               <div className="h-0.5 bg-white w-full scale-x-0 group-hover:scale-x-100 transition-all duration-300" />
             </div>
-            {profile && (
+            <FontAwesomeIcon
+              icon={faBell}
+              className="w-3.5 h-3.5 cursor-pointer"
+              onClick={() => setNotifications((prev) => !prev)}
+            />
+            {(profile || notifications) && (
               <div
                 ref={overlayy}
                 className="fixed z-40 left-0 right-0 top-0 bottom-0 mx-auto bg-transparent p-10"
                 onClick={onClick}
               />
             )}
+            <div
+              className={`flex flex-col gap-y-2 bg-[#485e7f] px-4 rounded min-h-fit max-h-[270px] text-base w-[340px] absolute top-8 -right-4 z-50
+            ${
+              notifications ? "h-[192px] py-4" : "h-0 py-0"
+            } transition-all duration-300 overflow-hidden
+            `}
+            >
+              <NotificationItem />
+              <NotificationItem />
+              <div
+                onClick={() => router.push("/notifications")}
+                className="text-sm text-white/80 cursor-pointer hover:underline hover:text-white border-t border-white/70 w-full flex items-center justify-center py-1"
+              >
+                View All
+              </div>
+            </div>
             <div
               className={`flex flex-col gap-y-2 bg-[#485e7f]/70 px-4 rounded justify-center text-base w-[140px] absolute top-8 -right-4 z-50
             ${

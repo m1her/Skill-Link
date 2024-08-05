@@ -13,7 +13,15 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useUserData } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 
-export const SubNavBar = ({ children }: { children: React.ReactNode }) => {
+export const SubNavBar = ({
+  children,
+  titleStyle,
+  emailStyle,
+}: {
+  children?: React.ReactNode;
+  titleStyle?: string;
+  emailStyle?: string;
+}) => {
   const { user } = useUserData();
   const router = useRouter();
   const [profile, setProfile] = useState<boolean>(false);
@@ -44,7 +52,7 @@ export const SubNavBar = ({ children }: { children: React.ReactNode }) => {
       <div className="md:px-16 px-10 py-4 flex items-start justify-between w-full">
         <Link
           href="/"
-          className=" text-[#061048] font-bold text-xl whitespace-nowrap"
+          className={` text-[#061048] ${titleStyle} font-bold text-xl whitespace-nowrap`}
         >
           SKILL LINK
         </Link>
@@ -54,7 +62,7 @@ export const SubNavBar = ({ children }: { children: React.ReactNode }) => {
               className=" select-none cursor-pointer relative group"
               onClick={() => setProfile((prev) => !prev)}
             >
-              <div className="flex items-center gap-x-2">
+              <div className={`flex items-center gap-x-2 ${emailStyle}`}>
                 <FontAwesomeIcon icon={faUser} className="w-4 h-4" />{" "}
                 {user.email}
               </div>
@@ -68,10 +76,10 @@ export const SubNavBar = ({ children }: { children: React.ReactNode }) => {
               />
             )}
             <div
-              className={`flex flex-col gap-y-2 bg-[#485e7f]/70 px-4 rounded justify-center text-base w-[140px] absolute z-50 top-8 -right-4
+              className={`flex flex-col gap-y-2 bg-[#485e7f]/80 px-4 rounded justify-center text-base w-[140px] absolute z-50 top-8 -right-4
           ${
             profile ? "h-[80px]" : "h-0"
-          } transition-all duration-300 overflow-hidden
+          } transition-all duration-300 overflow-hidden ${emailStyle}
           `}
             >
               <Link href={`/profile/${encodedEmail}`} className="text-sm group">
